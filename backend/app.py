@@ -2,8 +2,10 @@ from flask import Flask, request, jsonify
 from config import Config
 #from sighting import Sighting
 from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 app.config.from_object(Config)
 db = SQLAlchemy(app)
 
