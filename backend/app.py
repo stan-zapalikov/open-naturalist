@@ -64,7 +64,15 @@ def get_sighting_by_id(id):
         }
     )
 
+@app.route('/sightings/int:id>', methods=['DELETE'])
+def delete_sighting_by_id(id):
+    sighting = Sighting.query.get(id)
 
+    if not sighting:
+        return jsonify({"message": "sighting not found"}), 404
+
+    db.session.delete(sighting)
+    db.session.commit()
 
 if __name__=='__main__':
     with app.app_context():
