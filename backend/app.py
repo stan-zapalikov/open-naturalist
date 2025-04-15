@@ -48,6 +48,24 @@ def get_sightings():
         for s in sightings
     ])
 
+@app.route('/sightings/<int:id>', methods=['GET'])
+def get_sighting_by_id(id):
+    sighting = Sighting.query.get(id)
+
+    if not sighting:
+        return jsonify({"message": "sighting not found"}), 404
+
+    return jsonify(
+        {
+            'id': sighting.id,
+            'animal_name': sighting.animal_name,
+            'latitude': sighting.latitude,
+            'longitude': sighting.longitude
+        }
+    )
+
+
+
 if __name__=='__main__':
     with app.app_context():
         db.create_all()
