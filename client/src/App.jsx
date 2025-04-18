@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import SightingNameField from './components/SightingNameField'
+import './App.css'
 
 export default function App() {
   const [userLocation, setUserLocation] = useState(null)
@@ -14,12 +15,33 @@ export default function App() {
       .catch(err => console.error("Fetch error: ", err))
   }, [])
   
-  const getUserLocation = () => {
+
+
+  const handleFormSubmit = (animalName) => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const {latitude, longitude} = position.coords
-          setUserLocation({latitude, longitude})
+
+          const payload = {
+          animal_name: animalName,
+          latitude: latitude,
+          longitude: longitude
+          }
+          
+          fetch("http://localhost:5000/upload", { 
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(payload)
+          })
+            .then(res => res.json())
+            .then(data => console.log("Success: ", data))
+            .catch(err => console.error("Error: ", err))
+        },
+        (error) => {
+          console.error("Geolocation error: ", error)
         }
       )
     } else {
@@ -27,40 +49,8 @@ export default function App() {
     }
   }
 
-  const handleFormSubmit = (animalName) => {
-    if (!userLocation) {
-      console.error("No location data")
-      return;
-    }
-    const payload = {
-      animal_name: animalName,
-      latitude: userLocation.latitude,
-      longitude: userLocation.longitude
-    }
-
-    fetch("http://localhost:5000/upload", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(payload)
-    })
-      .then(res => res.json())
-      .then(data => console.log("Success: ", data))
-      .catch(err => console.error("Error: ", err))
-  }
-
   return (
-  <>
-    <button onClick={getUserLocation}>Get User Location</button>
-    {userLocation && (
-      <div>
-        <h2>User Location</h2>
-        <p>Latitude: {userLocation.latitude}</p>
-        <p>Longitude: {userLocation.longitude}</p>
-      </div>
-      
-    )}
+  <div class=""> 
     <SightingNameField 
       sightingName={sightingName} 
       setSightingName={setSightingName} 
@@ -76,6 +66,6 @@ export default function App() {
       ))}
     </ul>
 
-  </>
+  </div>
 )
 }
