@@ -29,3 +29,7 @@ class User(db.Model):
     def delete(self):
         db.session.delete(self)
         db.session.commit()
+
+class TokenBlocklist(db.Model):
+    id = db.Column(db.Integer(), primary=True)
+    
