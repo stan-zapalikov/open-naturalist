@@ -44,5 +44,13 @@ class Sighting(db.Model):
         return f"<Sighting {self.name}>"
 
     @classmethod
-    def get_sighting_by_details(cls, name, lat, lon):
-        return cls.query.filter_by(name = name, latitude = lat, longitude = lon)
+    def get_sighting_by_details(cls, name, latitude, longitude):
+        return cls.query.filter_by(name = name, latitude = latitude, longitude = longitude)
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()

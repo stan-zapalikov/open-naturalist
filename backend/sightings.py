@@ -13,20 +13,18 @@ sighting_bp = Blueprint("sightings", __name__)
 @sighting_bp.get("/all")
 def get_all_sightings():
     
-    name = request.args.get("name")
-    latitude = request.args.get("latitude")
-    longitude = request.args.get("longitude")
+    page = request.args.get('page', default=1, type=int)
+    per_page = request.args.get('per_page', default=10, type=int)
 
     sightings = Sighting.query.paginate(
-        name = name,
-        latitude = latitude,
-        longitude = longitude
+        page = page,
+        per_page=per_page
     )
 
-    return jsonify({"sightings": SightingSchema().dump})
+    return jsonify({"sightings": SightingSchema().dump(sightings, many=True)})
 
 @sighting_bp.post("/upload")
-@jwt_required
+@jwt_required()
 def upload_sighting():
     data = request.get_json()
 
