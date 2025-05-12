@@ -31,5 +31,20 @@ def upload_sighting():
     data = request.get_json()
 
     sighting = Sighting.get_sighting_by_details(
-        # TODO
+        name= data.get("name"),
+        latitude = data.get("latitude"),
+        longitude = data.get("longitude")
     )
+
+    if sighting is None:
+        return jsonify({"error": "sighting already exists"}), 409
+
+    new_sighting = Sighting(
+        name= data.get("name"),
+        latitude = data.get("latitude"),
+        longitude = data.get("longitude")
+    )
+
+    new_sighting.save()
+
+    return jsonify({"message": "sighting created"}), 201
