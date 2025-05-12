@@ -1,6 +1,6 @@
 # Open Naturalist
 
-Open Naturalist is a web application inspired by [iNaturalist](https://www.inaturalist.org/). It allows users to log and share wildlife sightings, including the animal name and geolocation, and provides user authentication and role-based access to user data.
+Open Naturalist is a web application inspired by [iNaturalist](https://www.inaturalist.org/). It allows users to log and share wildlife sightings, including the animal name and geolocation.
 
 ## Features -- WORK IN PROGRESS
 
