@@ -24,3 +24,12 @@ def get_all_sightings():
     )
 
     return jsonify({"sightings": SightingSchema().dump})
+
+@sighting_bp.post("/upload")
+@jwt_required
+def upload_sighting():
+    data = request.get_json()
+
+    sighting = Sighting.get_sighting_by_details(
+        # TODO
+    )

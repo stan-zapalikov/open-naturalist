@@ -39,3 +39,10 @@ class Sighting(db.Model):
     name = db.Column(db.String(), nullable=False)
     latitude = db.Column(db.Float(), nullable=False)
     longitude = db.Column(db.Float(), nullable=False)
+
+    def __repr__(self):
+        return f"<Sighting {self.name}>"
+
+    @classmethod
+    def get_sighting_by_details(cls, name, lat, lon):
+        return cls.query.filter_by(name = name, latitude = lat, longitude = lon)
