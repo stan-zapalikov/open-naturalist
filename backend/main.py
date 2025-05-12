@@ -2,6 +2,7 @@ from flask import Flask, jsonify
 from extensions import db, jwt
 from auth import auth_bp
 from users import user_bp
+from sightings import sighting_bp
 from models import User
 
 def create_app():
@@ -17,6 +18,7 @@ def create_app():
     # register blueprints
     app.register_blueprint(auth_bp, url_prefix="/auth")
     app.register_blueprint(user_bp, url_prefix="/users")
+    app.register_blueprint(sighting_bp, url_prefix="/sightings")
 
     # load user
     @jwt.user_lookup_loader
@@ -43,5 +45,7 @@ def create_app():
     @jwt.unauthorized_loader
     def missing_token_callback(error):
         return jsonify({"message": "Request does not contain a valid token", "error": "authorization_header"}),401
+
+
 
     return app

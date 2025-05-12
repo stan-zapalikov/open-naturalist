@@ -31,5 +31,11 @@ class User(db.Model):
         db.session.commit()
 
 class TokenBlocklist(db.Model):
-    id = db.Column(db.Integer(), primary=True)
+    id = db.Column(db.Integer(), primary_key=True)
     
+class Sighting(db.Model):
+    __tablename__ = "sightings"
+    id = db.Column(db.String(), primary_key=True, default = str(uuid4()))
+    name = db.Column(db.String(), nullable=False)
+    latitude = db.Column(db.Float(), nullable=False)
+    longitude = db.Column(db.Float(), nullable=False)
