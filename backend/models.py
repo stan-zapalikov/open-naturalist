@@ -35,7 +35,7 @@ class TokenBlocklist(db.Model):
     
 class Sighting(db.Model):
     __tablename__ = "sightings"
-    id = db.Column(db.String(), primary_key=True, default = str(uuid4()))
+    id = db.Column(db.String(), primary_key=True, default = lambda: str(uuid4()))
     name = db.Column(db.String(), nullable=False)
     latitude = db.Column(db.Float(), nullable=False)
     longitude = db.Column(db.Float(), nullable=False)
