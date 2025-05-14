@@ -1,6 +1,7 @@
 from extensions import db
 from uuid import uuid4
 from werkzeug.security import generate_password_hash, check_password_hash
+from geoalchemy2 import Geometry
 
 class User(db.Model):
     __tablename__ = "users"
@@ -37,15 +38,14 @@ class Sighting(db.Model):
     __tablename__ = "sightings"
     id = db.Column(db.String(), primary_key=True, default = lambda: str(uuid4()))
     name = db.Column(db.String(), nullable=False)
-    latitude = db.Column(db.Float(), nullable=False)
-    longitude = db.Column(db.Float(), nullable=False)
+    location = db.Column(Geometry("POINT"))
 
     def __repr__(self):
         return f"<Sighting {self.name}>"
 
     @classmethod
-    def get_sighting_by_details(cls, name, latitude, longitude):
-        return cls.query.filter_by(name = name, latitude = latitude, longitude = longitude)
+    def get_sighting_by_details(cls, name, location):
+        return cls.query.filter_by(name = name, latitude = location)
 
     def save(self):
         db.session.add(self)

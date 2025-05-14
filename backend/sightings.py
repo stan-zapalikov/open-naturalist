@@ -5,6 +5,8 @@ from flask_jwt_extended import (create_access_token,
                                 get_jwt, 
                                 current_user,
                                 get_jwt_identity)
+from geoalchemy2.shape import from_shape
+from shapely.geometry import Point
 from schemas import SightingSchema
 from models import Sighting
 
@@ -30,8 +32,7 @@ def upload_sighting():
 
     sighting = Sighting.get_sighting_by_details(
         name= data.get("name"),
-        latitude = data.get("latitude"),
-        longitude = data.get("longitude")
+        location = Point(data.get("longitude"), data.get("latitude"), srid=4326)
     )
 
     if sighting is None:
@@ -39,10 +40,12 @@ def upload_sighting():
 
     new_sighting = Sighting(
         name= data.get("name"),
-        latitude = data.get("latitude"),
-        longitude = data.get("longitude")
+        location = Point(data.get("longitude"), data.get("latitude"), srid=4326)
     )
 
     new_sighting.save()
 
     return jsonify({"message": "sighting created"}), 201
+
+
+
